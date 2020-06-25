@@ -1,5 +1,18 @@
 ---
-- hosts: localhost
+- hosts: all
   remote_user: root
   roles:
     - sapcar
+  vars:
+    - sapcar_url: http://nas.matsusoft.com:5005/install_files/sap/sapcar_721_win_x64/SAPCAR_1320-80000938.EXE
+    - sapcar_url_username: anonymous
+  tasks:
+  - name: Get output of sapcar -v
+    win_command: sapcar -v
+    register: sapcar_v_out
+    changed_when: False
+  - name: Assert command result
+    assert:
+      that:
+      - "'kernel release                721' in sapcar_v_out.stdout"
+      - "'compiled for                  64 BIT' in sapcar_v_out.stdout"

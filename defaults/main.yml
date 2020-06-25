@@ -1,2 +1,4 @@
 ---
-# defaults file for sapcar
+sapcar_executable_dest: C:\Windows\sapcar.exe
+sapcar_url_username: null
+sapcar_url_password: null

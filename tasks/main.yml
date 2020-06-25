@@ -1,2 +1,7 @@
 ---
-# tasks file for sapcar
+- name: Ensure sapcar.exe have been downloaded
+  win_get_url:
+    url: "{{ sapcar_url }}"
+    url_username: "{{ sapcar_url_username }}"
+    url_password: "{{ sapcar_url_password }}"
+    dest: "{{ sapcar_executable_dest }}"
