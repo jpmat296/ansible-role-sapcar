@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    - sapcar_url:
+        http://nas.matsusoft.com:5005/install_files/sap/sapcar_721_win_x64/SAPCAR_1320-80000938.EXE
+    - sapcar_url_username: anonymous
+  roles:
+    - sapcar

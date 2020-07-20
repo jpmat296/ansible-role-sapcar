@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+  - name: Get output of sapcar -v
+    win_command: sapcar -v
+    register: sapcar_v_out
+    changed_when: false
+  - name: Assert command result
+    assert:
+      that:
+        - "'kernel release                721' in sapcar_v_out.stdout"
+        - "'compiled for                  64 BIT' in sapcar_v_out.stdout"
