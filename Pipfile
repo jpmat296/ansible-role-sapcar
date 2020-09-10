@@ -1,0 +1,15 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+molecule = "==2.22"
+python-vagrant = "*"
+ansible = "*"
+pywinrm = "*"
+
+[requires]
+python_version = "3.8"

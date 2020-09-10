@@ -4,7 +4,7 @@ stage('root') {
   try {
     parallel win2012r2: {
       stage('win2012r2') {
-        node('lp009') {
+        node('nomaster') {
            sleep 1
            executeMoleculeScenario('default')
         }
@@ -12,7 +12,7 @@ stage('root') {
     },
     win2016: {
       stage('win2016') {
-        node('lp009') {
+        node('nomaster') {
            sleep 30
            executeMoleculeScenario('win2016')
         }
@@ -37,14 +37,18 @@ def executeMoleculeScenario(String scenario) {
     timestamps {
       try {
         sh """#!/bin/bash
-          set -x
+          set -xe
           bash ~/bin/vms_destroy.sh
+          source /usr/local/pyenv/.pyenvrc
           cd sapcar
+          export PATH=\$(pipenv --venv)/bin:\$PATH
+          pipenv install
+          hash -r
           molecule test -s $scenario
         """
       } catch (FlowInterruptedException ie) {
         sh """#!/bin/bash
-          set -x
+          set -xe
           cd sapcar
           molecule destroy -s $scenario
         """
