@@ -41,8 +41,8 @@ def executeMoleculeScenario(String scenario) {
           bash ~/bin/vms_destroy.sh
           source /usr/local/pyenv/.pyenvrc
           cd sapcar
-          export PATH=\$(pipenv --venv)/bin:\$PATH
           pipenv install
+          export PATH=\$(pipenv --venv)/bin:\$PATH
           hash -r
           molecule test -s $scenario
         """
