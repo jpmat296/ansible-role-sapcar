@@ -32,7 +32,6 @@ stage('root') {
 
 def executeMoleculeScenario(String scenario) {
   checkout([$class: 'GitSCM', branches: [[name: env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sapcar']],                submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f37e5623-35de-4909-ba30-72a3dad7a582', url: 'git@github.com:jpmat296/ansible-role-sapcar.git']]])
-  checkout([$class: 'GitSCM', branches: [[name: '*/master']],      doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'jpmat296.localization']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f37e5623-35de-4909-ba30-72a3dad7a582', url: 'git@github.com:jpmat296/ansible.localization.git']]])
   stage('molecule') {
     timestamps {
       try {

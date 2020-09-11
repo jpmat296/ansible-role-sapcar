@@ -1,0 +1,4 @@
+---
+roles:
+  - name: jpmat296.localization
+    src: https://github.com/jpmat296/ansible.localization
