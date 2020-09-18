@@ -5,8 +5,8 @@ driver:
   name: vagrant
   provider:
     name: virtualbox
-lint:
-  name: yamllint
+lint: |
+  yamllint .
 platforms:
   - name: vagrant-win2016
     box: jborean93/WindowsServer2016
@@ -24,11 +24,11 @@ provisioner:
         ansible_winrm_transport: ntlm
         ansible_winrm_scheme: https
         ansible_winrm_server_cert_validation: ignore
-  lint:
-    name: ansible-lint
+  lint: |
+    ansible-lint
 scenario:
   name: win2016
 verifier:
   name: ansible
-  lint:
-    name: ansible-lint
+  lint: |
+    ansible-lint

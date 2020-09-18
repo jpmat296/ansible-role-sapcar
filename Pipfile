@@ -6,10 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-molecule = "==2.22"
+molecule = "==3.*"
 python-vagrant = "*"
 ansible = "*"
 pywinrm = "*"
+molecule-vagrant = "*"
 
 [requires]
 python_version = "3.8"
