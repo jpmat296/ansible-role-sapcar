@@ -35,22 +35,38 @@ def executeMoleculeScenario(String scenario) {
   stage('molecule') {
     timestamps {
       try {
-        sh """#!/bin/bash
-          set -xe
-          bash ~/bin/vms_destroy.sh
-          source /usr/local/pyenv/.pyenvrc
-          cd sapcar
-          pipenv install
-          export PATH=\$(pipenv --venv)/bin:\$PATH
-          hash -r
-          molecule test -s $scenario
-        """
-      } catch (FlowInterruptedException ie) {
-        sh """#!/bin/bash
-          set -xe
-          cd sapcar
-          molecule destroy -s $scenario
-        """
+        stage('create') {
+          sh """#!/bin/bash
+            set -xe
+            bash ~/bin/vms_destroy.sh || true
+            source /usr/local/pyenv/.pyenvrc
+            cd sapcar
+            pipenv install
+            export PATH=\$(pipenv --venv)/bin:\$PATH
+            hash -r
+            molecule create -s $scenario
+          """
+        }
+        stage('test') {
+          sh """#!/bin/bash
+            set -xe
+            source /usr/local/pyenv/.pyenvrc
+            cd sapcar
+            export PATH=\$(pipenv --venv)/bin:\$PATH
+            hash -r
+            molecule test --destroy never -s $scenario
+          """
+        }
+      } finally {
+        stage('destroy') {
+          sh """#!/bin/bash
+            set -xe
+            source /usr/local/pyenv/.pyenvrc
+            cd sapcar
+            export PATH=\$(pipenv --venv)/bin:\$PATH
+            molecule destroy -s $scenario
+          """
+        }
       }
     }
   }
