@@ -1,11 +1,3 @@
 ---
 - name: Prepare
   hosts: all
-  roles:
-    - jpmat296.localization
-  vars:
-    - localization_region:
-        location: 84
-        format: fr-FR
-        unicode_language: fr-FR
-    - localization_keyboardlang: '0000040c'
