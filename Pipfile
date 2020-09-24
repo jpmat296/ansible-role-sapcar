@@ -8,9 +8,10 @@ verify_ssl = true
 [packages]
 molecule = "==3.*"
 python-vagrant = "*"
-ansible = "*"
+ansible = "==2.9.*"
 pywinrm = "*"
 molecule-vagrant = "*"
+ansible-lint = "*"
 
 [requires]
 python_version = "3.8"
