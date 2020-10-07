@@ -1,31 +1,49 @@
-Role Name
-=========
+sapcar
+======
 
-A brief description of the role goes here.
+SAPCAR is a compress utility (similar to winzip, tar, etc.), that is used by SAP to compress
+and decompress delivered files. SAP Kernel Programs. SAPCAR in general. The compressed files
+have the extension ".CAR" or ".SAR".
+
+This role installs `sapcar.exe` on Windows platforms, by downloading installation file from
+a local url.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+No requirement.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values:
+
+    sapcar_url: http://repo/install_files/sapcar_721_win_x64/SAPCAR_1320-80000938.EXE
+    sapcar_url_username: null
+    sapcar_url_password: null
+
+URL to download SAPCAR installation file. Username and password are optional variables.
+
+    sapcar_executable_dest: C:\Windows\sapcar.exe
+
+Destination for the executable. This should not be changed. If it's really required,
+then use a location included in windows environement variable `PATH`.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+No dependency.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: sapservers
+      vars:
+        sapcar_url: http://local_apache/install_files/sapcar_721_win_x64/SAPCAR_1320-80000938.EXE
       roles:
-         - { role: username.rolename, x: 42 }
+        - jpmat296.sapcar
 
 License
 -------
@@ -35,4 +53,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2020 by [Jean-Pierre Matsumoto](https://fr.linkedin.com/in/jpmatsumoto).
