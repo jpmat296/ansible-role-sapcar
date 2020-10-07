@@ -13,8 +13,8 @@ stage('root') {
     win2016: {
       stage('win2016') {
         node('nomaster') {
-           sleep 30
-           executeMoleculeScenario('win2016')
+          sleep 30
+          executeMoleculeScenario('win2016')
         }
       }
     }
