@@ -12,7 +12,6 @@ lint: |
 platforms:
   - name: vagrant-win2016
     box: jborean93/WindowsServer2016
-    memory: 2048
 provisioner:
   name: ansible
   inventory:
