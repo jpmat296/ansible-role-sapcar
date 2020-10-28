@@ -1,6 +1,6 @@
 ---
 # tasks file for sapcar
-- name: Ensure sapcar.exe have been downloaded
+- name: Ensure sapcar.exe has been downloaded
   win_get_url:
     url: "{{ sapcar_url }}"
     url_username: "{{ sapcar_url_username }}"

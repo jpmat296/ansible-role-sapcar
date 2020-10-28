@@ -10,14 +10,16 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-  - name: vagrant-win2016
-    box: jborean93/WindowsServer2016
+  - name: vagrant-win2019
+    box: jborean93/WindowsServer2019
     memory: 2048
+    instance_raw_config_args:
+      - "vm.boot_timeout = 1200"
 provisioner:
   name: ansible
   inventory:
     host_vars:
-      vagrant-win2016:
+      vagrant-win2019:
         ansible_user: vagrant
         ansible_password: vagrant
         ansible_port: 55986
@@ -27,6 +29,6 @@ provisioner:
         ansible_winrm_scheme: https
         ansible_winrm_server_cert_validation: ignore
 scenario:
-  name: win2016
+  name: win2019
 verifier:
   name: ansible

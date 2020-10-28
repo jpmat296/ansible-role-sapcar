@@ -5,16 +5,16 @@ stage('root') {
     parallel win2012r2: {
       stage('win2012r2') {
         node('nomaster') {
-           sleep 1
-           executeMoleculeScenario('default')
+          sleep 1
+          executeMoleculeScenario('default')
         }
       }
     },
-    win2016: {
-      stage('win2016') {
+    win2019: {
+      stage('win2019') {
         node('nomaster') {
           sleep 30
-          executeMoleculeScenario('win2016')
+          executeMoleculeScenario('win2019')
         }
       }
     }
