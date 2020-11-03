@@ -1,6 +1,9 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: molecule/win2019/requirements.yml
+    requirements-file: molecule/win2019/requirements.yml
 driver:
   name: vagrant
   provider:

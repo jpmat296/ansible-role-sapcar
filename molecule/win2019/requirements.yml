@@ -1,1 +1,6 @@
-../../requirements.yml
+---
+roles: {}
+
+collections:
+  - name: sbaerlocher.windows
+    version: 0.0.7
