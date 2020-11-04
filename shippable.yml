@@ -1,0 +1,25 @@
+---
+env:
+  - SCENARIO=default
+  - SCENARIO=win2019
+
+build:
+
+  pre_ci_boot:
+    image_name: u16matsu
+    image_tag: latest
+    options: "--privileged=true --net=bridge -v /root/.vagrant.d/boxes:/root/.vagrant.d/boxes"
+    pull: false
+
+  ci:
+    - add-apt-repository ppa:deadsnakes/ppa
+    - apt update
+    - apt install python3.8 python3-setuptools python3.8-distutils
+    - python3.8 --version
+    - python3.8 -m easy_install pip
+    - python3.8 -m pip --version
+    - python3.8 -m pip install molecule==3.* molecule-vagrant python-vagrant pywinrm ansible-lint
+    - molecule test -s $SCENARIO
+
+  always:
+    - molecule destroy -s $SCENARIO
