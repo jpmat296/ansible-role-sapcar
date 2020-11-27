@@ -53,7 +53,7 @@ def executeToxForPlatform(String platform) {
             bash ~/bin/vms_destroy.sh || true
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini -e py38-$platform-vsphere-createonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-createonly
           """
         }
         stage('test') {
@@ -61,7 +61,7 @@ def executeToxForPlatform(String platform) {
             set -xe
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini -e py38-$platform-vsphere-testonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-testonly
           """
         }
       } finally {
@@ -70,7 +70,7 @@ def executeToxForPlatform(String platform) {
             set -xe
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini -e py38-$platform-vsphere-destroyonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-destroyonly
             bash ~/bin/vms_destroy.sh || true
           """
         }
