@@ -1,0 +1,34 @@
+---
+scenario:
+  name: vsphere
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/vsphere/requirements.yml
+    requirements-file: molecule/vsphere/requirements.yml
+driver:
+  name: delegated
+  vm_username: Administrator
+  connection: winrm
+  port: 5986
+  winrm_transport: ntlm
+  winrm_server_cert_validation: ignore
+  # Following 2 timeouts are not taken account by delegated driver
+  winrm_operation_timeout_sec: 200
+  winrm_read_timeout_sec: 300
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: car-${WIN_TAG:-win2012}-${BUILD_NUMBER:-000}
+    template: windows-base-${WIN_TAG:-win2012}
+    snapshot_src: Clean updated minimal install
+    memory_mb: 2048
+    cpus: 2
+    network: VM Network
+    datastore: MX500_1TB
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

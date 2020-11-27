@@ -1,6 +1,9 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: molecule/default/requirements.yml
+    requirements-file: molecule/default/requirements.yml
 driver:
   name: vagrant
   provider:
@@ -10,13 +13,16 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-  - name: vagrant-win2012r2
-    box: jborean93/WindowsServer2012R2
+  - name: vagrant-win${WIN_VERSION:-2012R2}
+    box: jborean93/WindowsServer${WIN_VERSION:-2012R2}
+    memory: 2048
+    instance_raw_config_args:
+      - "vm.boot_timeout = 1200"
 provisioner:
   name: ansible
   inventory:
     host_vars:
-      vagrant-win2012r2:
+      vagrant-win${WIN_VERSION:-2012R2}:
         ansible_user: vagrant
         ansible_password: vagrant
         ansible_port: 55986
@@ -25,6 +31,8 @@ provisioner:
         ansible_winrm_transport: ntlm
         ansible_winrm_scheme: https
         ansible_winrm_server_cert_validation: ignore
+        ansible_winrm_operation_timeout_sec: 200
+        ansible_winrm_read_timeout_sec: 300
 scenario:
   name: default
 verifier:

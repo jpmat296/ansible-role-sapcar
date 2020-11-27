@@ -1,20 +1,32 @@
+import groovy.transform.Field
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
+
+@Field def ROLE_NAME = "ansible-role-sapcar"
+@Field def GIT_URL = "git@github.com:jpmat296/${ROLE_NAME}.git"
 
 stage('root') {
   try {
     parallel win2012r2: {
       stage('win2012r2') {
-        node('nomaster') {
+        node('vsphere') {
           sleep 1
-          executeMoleculeScenario('default')
+          executeToxForPlatform('win2012r2')
+        }
+      }
+    },
+    win2016: {
+      stage('win2016') {
+        node('vsphere') {
+          sleep 30
+          executeToxForPlatform('win2016')
         }
       }
     },
     win2019: {
       stage('win2019') {
-        node('nomaster') {
-          sleep 30
-          executeMoleculeScenario('win2019')
+        node('vsphere') {
+          sleep 60
+          executeToxForPlatform('win2019')
         }
       }
     }
@@ -30,9 +42,9 @@ stage('root') {
   }
 }
 
-def executeMoleculeScenario(String scenario) {
-  checkout([$class: 'GitSCM', branches: [[name: env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sapcar']],                submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f37e5623-35de-4909-ba30-72a3dad7a582', url: 'git@github.com:jpmat296/ansible-role-sapcar.git']]])
-  stage('molecule') {
+def executeToxForPlatform(String platform) {
+  checkout([$class: 'GitSCM', branches: [[name: env.BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: ROLE_NAME]],                submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f37e5623-35de-4909-ba30-72a3dad7a582', url: GIT_URL]]])
+  stage('tox') {
     timestamps {
       try {
         stage('create') {
@@ -40,21 +52,16 @@ def executeMoleculeScenario(String scenario) {
             set -xe
             bash ~/bin/vms_destroy.sh || true
             source /usr/local/pyenv/.pyenvrc
-            cd sapcar
-            pipenv sync
-            export PATH=\$(pipenv --venv)/bin:\$PATH
-            hash -r
-            molecule create -s $scenario
+            cd $ROLE_NAME
+            tox -c tox-vsphere.ini -e py38-$platform-vsphere-createonly
           """
         }
         stage('test') {
           sh """#!/bin/bash
             set -xe
             source /usr/local/pyenv/.pyenvrc
-            cd sapcar
-            export PATH=\$(pipenv --venv)/bin:\$PATH
-            hash -r
-            molecule test --destroy never -s $scenario
+            cd $ROLE_NAME
+            tox -c tox-vsphere.ini -e py38-$platform-vsphere-testonly
           """
         }
       } finally {
@@ -62,9 +69,9 @@ def executeMoleculeScenario(String scenario) {
           sh """#!/bin/bash
             set -xe
             source /usr/local/pyenv/.pyenvrc
-            cd sapcar
-            export PATH=\$(pipenv --venv)/bin:\$PATH
-            molecule destroy -s $scenario
+            cd $ROLE_NAME
+            tox -c tox-vsphere.ini -e py38-$platform-vsphere-destroyonly
+            bash ~/bin/vms_destroy.sh || true
           """
         }
       }
