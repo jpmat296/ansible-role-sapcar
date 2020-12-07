@@ -3,6 +3,7 @@ import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 @Field def ROLE_NAME = "ansible-role-sapcar"
 @Field def GIT_URL = "git@github.com:jpmat296/${ROLE_NAME}.git"
+@Field def ROLE_NAME_SHORT = "sapcar"
 
 stage('root') {
   try {
@@ -53,7 +54,7 @@ def executeToxForPlatform(String platform) {
             bash ~/bin/vms_destroy.sh || true
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-createonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-$ROLE_NAME_SHORT-vsphere-createonly
           """
         }
         stage('test') {
@@ -61,7 +62,7 @@ def executeToxForPlatform(String platform) {
             set -xe
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-testonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-$ROLE_NAME_SHORT-vsphere-testonly
           """
         }
       } finally {
@@ -70,7 +71,7 @@ def executeToxForPlatform(String platform) {
             set -xe
             source /usr/local/pyenv/.pyenvrc
             cd $ROLE_NAME
-            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-sapcar-vsphere-destroyonly
+            tox -c tox-vsphere.ini --workdir .tox -e py38-$platform-$ROLE_NAME_SHORT-vsphere-destroyonly
             bash ~/bin/vms_destroy.sh || true
           """
         }
