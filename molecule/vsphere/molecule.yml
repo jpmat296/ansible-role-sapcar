@@ -3,9 +3,6 @@ scenario:
   name: vsphere
 dependency:
   name: galaxy
-  options:
-    role-file: molecule/vsphere/requirements.yml
-    requirements-file: molecule/vsphere/requirements.yml
 driver:
   name: delegated
   vm_username: Administrator
